@@ -1,1 +1,1 @@
-# *Ohjelmistotekniikka* **harjoitustyö**
+*Ohjelmistotekniikka* **harjoitustyö**
