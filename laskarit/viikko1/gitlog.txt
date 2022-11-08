@@ -1,0 +1,97 @@
+commit c72477a301760b1248f889f33e748eb59ddf1dbf
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 12:02:34 2022 +0200
+
+    committaus
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2f7310a79479e970cc85f719979519ac4f41c9d1
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 12:01:43 2022 +0200
+
+    newfiles
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit e86ba55bb17ec6f7c8262a7eab97b34fdabb8117
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 11:59:03 2022 +0200
+
+    muokattiin tiedostoja
+
+ eka.txt      | 5 +++++
+ kolmas.txt   | 2 +-
+ tiedosto.txt | 5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 5b99c4c181c9b26f783c2f24fe4614e8f3ddcef7
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 11:57:17 2022 +0200
+
+    poistettiin toinen
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 75b1a08d6bfb277991c957bb4ab83de44d259e23
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 11:55:14 2022 +0200
+
+    poistettiin tekstiä tiedostosta
+
+ tiedosto.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 0bc6c89628d3f7cbbabb2075d6d31a42c729584e
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Mon Nov 7 11:54:42 2022 +0200
+
+    lisättiin tekstiä tiedostoon
+
+ tiedosto.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit a9d54bdb4a87bfb03baa92200b1788b8ca9f9de7
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Thu Nov 3 16:40:01 2022 +0200
+
+    hassuja mutoksia
+
+ kolmas.txt | 1 +
+ stuff/j    | 0
+ toinen.txt | 1 +
+ 3 files changed, 2 insertions(+)
+
+commit 1391106f5d60a4ba97a0d64ba877a5a62cecfd25
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Thu Nov 3 16:39:07 2022 +0200
+
+    lisättiin kolmas
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 46d4824c6019ac23f0d6c75319e5584eaae0521b
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Thu Nov 3 16:36:36 2022 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 3722e2c71fe4967885a3e6cd8a8a470788961ed0
+Author: pietarni <pietarni@ad.helsinki.fi>
+Date:   Thu Nov 3 16:35:40 2022 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
