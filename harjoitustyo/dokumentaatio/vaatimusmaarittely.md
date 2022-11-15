@@ -13,11 +13,11 @@ Ohjelma ilmoittaa kun pulkkamäkikartta on valmis, ja tätä voi selailla joko k
 
 ## Perusversion tarjoama toiminnallisuus
 
--Käyttäjä voi syöttää ohjelmaan maanpinta-aineiston.
-  -Käyttäjä voi syöttää omia vaatimuksiansa pulkkamäelle (esim jyrkkyys, pituus)
-    -Ohjelma sitten itsenäisesti etsii maanpinta-aineistosta vaatimuksiin sopivimmat mahdolliset pulkkamäet, merkitsee ne kartalle, esim. värittämällä ne .png-muotoisessa kuvassa
--Ohjelma voi myös itsenäisesti käydä läpiä suuria hajautettuja aineistoja, esim. kartta.hel.fi:n aineistot, ja luoda näistä suurempia pulkkamäkikarttoja.
--Pulkkamäkien tiedot ovat tallennettu tietokantaan, esim. niiden sijainnit ja arvioitu soveltuvuus pulkkamäkeilyyn.
+- Käyttäjä voi syöttää ohjelmaan maanpinta-aineiston.
+  - Käyttäjä voi syöttää omia vaatimuksiansa pulkkamäelle (esim jyrkkyys, pituus)
+    - Ohjelma sitten itsenäisesti etsii maanpinta-aineistosta vaatimuksiin sopivimmat mahdolliset pulkkamäet, merkitsee ne kartalle, esim. värittämällä ne .png-muotoisessa kuvassa
+- Ohjelma voi myös itsenäisesti käydä läpiä suuria hajautettuja aineistoja, esim. kartta.hel.fi:n aineistot, ja luoda näistä suurempia pulkkamäkikarttoja.
+- Pulkkamäkien tiedot ovat tallennettu tietokantaan, esim. niiden sijainnit ja arvioitu soveltuvuus pulkkamäkeilyyn.
 
 ## Jatkokehitysideoita
 
