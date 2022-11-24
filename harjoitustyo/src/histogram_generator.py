@@ -84,21 +84,25 @@ class HistogramGenerator:
         plt.show()
     
     def get_tiles_within_boundary(self):
-
+        #Check witch roadmap tiles are within the boundaries of the current HOG
         tileswithinboundary = []
         for tile in self.tiles:
             for coord in tile.koordinaatit:
                 if (coord[0] <=self.max_data_X and coord[0] >= self.min_data_X and coord[1] <=self.max_data_Y and coord[1]>=self.min_data_Y):
                     tileswithinboundary.append(tile)
+        #Load the chosen roadmaps
         for tile in tileswithinboundary:
             self.load_roadmap(tile)
         
     def load_roadmap(self, tile):
+        #Get the file from the zip archive
         self.roadmaparchive.extract("Greater-helsinki-3/"+tile.nimi+".tif", 'temp_tif')
         roadimage = Image.open(os.getcwd()+"/temp_tif/Greater-helsinki-3/"+tile.nimi+".tif")
+        #Resize to 1pixel/meter
         roadimage = roadimage.resize((1000,1000))
         
-        #adding padding
+        #adding padding by calculating the bounding box of the tile after rotating it by the angle
+        #1.75 is the angle of the roadmap dataset relative to the coordinate system.
         a = 1.75/57.296
         l = 1000
         New_Height = math.ceil(l * abs(math.sin(a)) + l * abs(math.cos(a)))
@@ -111,9 +115,11 @@ class HistogramGenerator:
         roadimage = roadimage.convert("RGBA")
         datas = roadimage.getdata()
 
+        #If the data is dark, make it invisible, otherwise make it faint red to mark danger zones
         newData = []
         for item in datas:
-            if item[0] < 127:
+            #How sensitive do we want the danger zones to be, the lower this value, the safer the map becomes, but might mark unnecessary areas as dangerous. 127 is good midline
+            if item[0] < 30:
                 newData.append((255, 255, 255, 0))
             else:
                 newData.append((255,0,0,40))
@@ -130,13 +136,9 @@ class HistogramGenerator:
         xnew = int(xoffset * c - yoffset * s)
         ynew = int(xoffset * s + yoffset * c-(l/2))
 
-        #print(ynew)
-        
         xdiff = tile.koordinaatit[0][0]-self.min_data_X
         ydiff = tile.koordinaatit[0][1]-self.max_data_Y-ynew*2
-        #xoffset = tile.koordinaatit[1][0]-topcorneroffsetX -self.min_data_X 
-        #yoffset = tile.koordinaatit[1][1]+topcorneroffsetY -self.max_data_Y
-        #print(yoffset)
+
         self.heightmapimg.paste(roadimage,(xdiff,-ydiff),roadimage)
         self.heightmapimg.save("test.png")
 
