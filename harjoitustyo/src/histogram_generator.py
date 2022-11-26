@@ -63,15 +63,23 @@ class HistogramGenerator:
         #Create Histogram of oriented gradients from image, we will use these to analyze slopes in the terrain.
         #From documentation of scikit-image: https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_hog.html
         hogimg = imread("heightmap.png")
-        hog_features, hog_image = hog(hogimg, orientations=6, pixels_per_cell=(10,10),
+        hog_features, hog_image = hog(hogimg, orientations=8, pixels_per_cell=(32,32),
                         cells_per_block=(1, 1), visualize=True, channel_axis=-1, feature_vector=False)
+        print("hog features")
+        #print(hog_features)
         #hog_features = np.asarray(hog_features)
+        print(np.shape(hog_features))
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex=True, sharey=True)
         ax1.axis('off')
-        ax1.imshow(hogimg, cmap=plt.cm.gray)
+
+
+        #TEST
+        dangerzonepic = imread("test.png")
+
+        ax1.imshow(dangerzonepic, cmap=plt.cm.gray)
         ax1.set_title('Input image')
         #Adjust HOG gamma to make it more visible
-        hog_image_bright = exposure.adjust_gamma(hog_image, gamma=0.4,gain=1)
+        hog_image_bright = exposure.adjust_gamma(hog_image, gamma=0.5,gain=1)
         ax2.axis('off')
         ax2.imshow(hog_image_bright, cmap=plt.cm.gray)
         ax2.set_title('Histogram of Oriented Gradients')
