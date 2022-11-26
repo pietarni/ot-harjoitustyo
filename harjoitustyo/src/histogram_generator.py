@@ -9,6 +9,7 @@ import json
 import math
 import zipfile
 import os
+from hog2 import hog2
 
 class indeksiruutu:
     def __init__(self):
@@ -45,6 +46,8 @@ class HistogramGenerator:
 
         img = Image.new('RGB', (self.len_data_X + 1,self.len_data_Y + 1), "black") # Create a new black image
         pixels = img.load()
+
+        heightmaparr = np.full((self.len_data_X+1,self.len_data_Y+1),-1.0)
         try:
             with open(self.path) as infile:
                 for line in infile:
@@ -53,36 +56,18 @@ class HistogramGenerator:
                     xval = int(float(splitline[0]))-self.min_data_X
                     yval = self.len_data_Y-(int(float(splitline[1]))-self.min_data_Y)
                     zval = int(float(splitline[2])*10)
-
                     pixels[xval,yval] = (zval,zval,zval)
+
+                    unclamped_z = float(splitline[2])
+                    heightmaparr[xval][yval] = unclamped_z
         except:
             print("ERROR: bad path")
             return 0
         img.save("heightmap.png")
         self.heightmapimg = img
+        hogmap = hog2(heightmaparr,5,8)
         #Create Histogram of oriented gradients from image, we will use these to analyze slopes in the terrain.
         #From documentation of scikit-image: https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_hog.html
-        hogimg = imread("heightmap.png")
-        hog_features, hog_image = hog(hogimg, orientations=8, pixels_per_cell=(32,32),
-                        cells_per_block=(1, 1), visualize=True, channel_axis=-1, feature_vector=False)
-        print("hog features")
-        #print(hog_features)
-        #hog_features = np.asarray(hog_features)
-        print(np.shape(hog_features))
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex=True, sharey=True)
-        ax1.axis('off')
-
-
-        #TEST
-        dangerzonepic = imread("test.png")
-
-        ax1.imshow(dangerzonepic, cmap=plt.cm.gray)
-        ax1.set_title('Input image')
-        #Adjust HOG gamma to make it more visible
-        hog_image_bright = exposure.adjust_gamma(hog_image, gamma=0.5,gain=1)
-        ax2.axis('off')
-        ax2.imshow(hog_image_bright, cmap=plt.cm.gray)
-        ax2.set_title('Histogram of Oriented Gradients')
         #Returns 1 if success
         return 1
     
