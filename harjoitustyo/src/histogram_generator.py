@@ -65,7 +65,9 @@ class HistogramGenerator:
             return 0
         img.save("heightmap.png")
         self.heightmapimg = img
-        hogmap = hog2(heightmaparr,5,8)
+        #cell size must be odd
+        self.hogmap = hog2(heightmaparr,3,8)
+
         #Create Histogram of oriented gradients from image, we will use these to analyze slopes in the terrain.
         #From documentation of scikit-image: https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_hog.html
         #Returns 1 if success
@@ -84,10 +86,12 @@ class HistogramGenerator:
                 if (coord[0] <=self.max_data_X and coord[0] >= self.min_data_X and coord[1] <=self.max_data_Y and coord[1]>=self.min_data_Y):
                     tileswithinboundary.append(tile)
         #Load the chosen roadmaps
+        self.roadmaparr = np.full((self.len_data_X+1,self.len_data_Y+1),False)
         for tile in tileswithinboundary:
             self.load_roadmap(tile)
         
     def load_roadmap(self, tile):
+        
         #Get the file from the zip archive
         self.roadmaparchive.extract("Greater-helsinki-3/"+tile.nimi+".tif", 'temp_tif')
         roadimage = Image.open(os.getcwd()+"/temp_tif/Greater-helsinki-3/"+tile.nimi+".tif")
@@ -131,6 +135,18 @@ class HistogramGenerator:
 
         xdiff = tile.koordinaatit[0][0]-self.min_data_X
         ydiff = tile.koordinaatit[0][1]-self.max_data_Y-ynew*2
+        
+        px = roadimage.load()
+
+        for x in range(0,1000):
+            for y in range(0,1000):
+                offsettedx = x+(xdiff*-1)
+                offsettedy = y-(ydiff*-1)
+                if (offsettedx < 0 or offsettedy < 0 or offsettedx >= 1000 or offsettedy >= 1000):
+                    continue
+
+                if (px[offsettedx,offsettedy][3] > 0): #if un transparent
+                    self.roadmaparr[x][y] = True
 
         self.heightmapimg.paste(roadimage,(xdiff,-ydiff),roadimage)
         self.heightmapimg.save("test.png")

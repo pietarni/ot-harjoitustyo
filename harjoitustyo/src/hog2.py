@@ -9,17 +9,17 @@ class hog2:
         self.resultarr = []
         self.orientations = orientations
         self.directionarr = self.interate_pixels()
-        img = Image.new('RGB', (len(self.directionarr) + 1,len(self.directionarr) + 1), "black") # Create a new black image
+        '''img = Image.new('RGB', (len(self.directionarr) + 1,len(self.directionarr) + 1), "black") # Create a new black image
         pixels = img.load()
         for x in range(0,len(self.directionarr)):
             for y in range(0,len(self.directionarr[x])):
                 valx = int(self.directionarr[x][y][0]*255)
                 valy = int(self.directionarr[x][y][1]*255)
                 pixels[x,y]=(valx,valy,0)
-        img.save("heightmap2.png")
+        img.save("heightmap2.png")'''
 
     def interate_pixels(self):
-        directionarr = np.full((len(self.inputarr[0]),len(self.inputarr),2),0.0)
+        directionarr = np.full((len(self.inputarr[0]),len(self.inputarr),self.orientations,3),0.0)
         for x in range(0,len(self.inputarr)):
             for y in range(0,len(self.inputarr[x])):
                 pxvalue = self.inputarr[x][y]
@@ -27,9 +27,9 @@ class hog2:
                 if (pxvalue >= 0):
                     neighbors = self.get_neighbors((x,y))
                     #print("NEIGHBORS ", neighbors)
-                    angle = self.calc_angle(neighbors,pxvalue)
+                    direction = self.calc_angle(neighbors,pxvalue)
                     #print("ANGLE ", math.degrees(angle))
-                    direction = self.angle_to_direction_vector(angle)
+                    #direction = self.angle_to_direction_vector(angle)
                     #print("DIRECTION ", direction)
                     directionarr[x][y] = direction
         return directionarr
@@ -65,7 +65,14 @@ class hog2:
                         orientation = round(angle/(360/self.orientations))
                         #add relative height value
                         #print(self.radius, x)
-                        orientationsarr[orientation] += neighbors[x+self.radius][y+self.radius]-value
+
+
+                        #original:
+                        #orientationsarr[orientation] += neighbors[x+self.radius][y+self.radius]-value
+
+                        #new (better for physical simulations, kinda interpolates the distance)
+                        orientationsarr[orientation] += (neighbors[x+self.radius][y+self.radius]-value) / np.linalg.norm([x,y])
+
                         countarr[orientation] += 1
         
 
@@ -75,7 +82,17 @@ class hog2:
             else:
                 orientationsarr[i] = 99999999
         
-        
+        xyzdirections=[]
+        for i in range(0,self.orientations):
+            angle_from_orientation = i*math.radians(360/self.orientations)
+            if (angle_from_orientation < 0):
+                angle_from_orientation = 360 - angle_from_orientation
+
+            direction = self.angle_to_direction_vector(angle_from_orientation)
+            xyzdirections.append( (direction[0], direction[1],orientationsarr[i]) )
+
+        return xyzdirections
+        '''
 
         #find minimum value direction
         minimumvalue = orientationsarr[0]
@@ -89,11 +106,15 @@ class hog2:
         if (minimumvalue < 0):
             #radian angle 
             angle_from_orientation = minimumvalueindex*math.radians(360/self.orientations)
+            if (angle_from_orientation < 0):
+                angle_from_orientation = 360 - angle_from_orientation
             return angle_from_orientation
         else:
-            return -1
+            return -1'''
 
     def angle_to_direction_vector(self,angle):
+        if (angle == -1):
+            return(0,0)
         #print(angle, math.cos(angle), math.sin(angle))
         return (math.cos(angle),math.sin(angle))
 
