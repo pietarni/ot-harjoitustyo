@@ -22,7 +22,7 @@ class indeksiruutu:
         self.koordinaatit.append(coord)
 
 class HistogramGenerator:
-    def __init__(self, path):
+    def __init__(self, path,roadmappath):
         #Temporary test and example source data
         self.path = path
         self.resmultiplier = 4
@@ -40,7 +40,7 @@ class HistogramGenerator:
         self.tiles = []
 
         #Temporary hard coded path to an input data zip file. This "roadmap" is a map of roads and buildings and other areas where we dont want the sleds to go to.
-        self.roadmaparchive = zipfile.ZipFile("/home/pietarni/ot/ot-harjoitustyo/harjoitustyo/input/Greater-helsinki-3.zip", 'r')
+        self.roadmaparchive = zipfile.ZipFile(roadmappath, 'r')
 
     #Creates histogram of directions from heightmap
     def read_elevation_data(self):
@@ -149,7 +149,7 @@ class HistogramGenerator:
                     self.roadmaparr[x][y] = True
 
         self.heightmapimg.paste(roadimage,(xdiff,-ydiff),roadimage)
-        self.heightmapimg.save("test.png")
+        self.heightmapimg.save("results/result.png")
 
 
     def read_json(self, jsonpath):
