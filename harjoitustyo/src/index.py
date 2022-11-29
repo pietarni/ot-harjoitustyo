@@ -30,7 +30,8 @@ for x in range(0,19):
     for y in range(0,19):
         rider = SimulationUnit((x*50+25,y*50+25),histogramGenerator.hogmap,histogramGenerator.roadmaparr,resultimg,[random.randint(0,255),random.randint(0,255),random.randint(0,255),255])
         rider.ride()
-resultimg.save("/results/result.png")
+resultimg.save("/result.png")
+resultimg.save(directory+"/results/result.png")
 print("Result image saved in results/result.png")
 #resultimg.save("result.png")
 #Show the sledders' paths on the map
