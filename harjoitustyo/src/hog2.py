@@ -3,21 +3,22 @@ from PIL import Image
 import numpy as np
 class hog2:
     def __init__(self, inputarr, cellsz, orientations):
+        #Input elevation data
         self.inputarr = inputarr
-        self.cellsz = cellsz
-        self.radius = int((self.cellsz-1)/2)
-        self.resultarr = []
-        self.orientations = orientations
-        self.directionarr = self.interate_pixels()
-        '''img = Image.new('RGB', (len(self.directionarr) + 1,len(self.directionarr) + 1), "black") # Create a new black image
-        pixels = img.load()
-        for x in range(0,len(self.directionarr)):
-            for y in range(0,len(self.directionarr[x])):
-                valx = int(self.directionarr[x][y][0]*255)
-                valy = int(self.directionarr[x][y][1]*255)
-                pixels[x,y]=(valx,valy,0)
-        img.save("heightmap2.png")'''
 
+        #Cell size
+        self.cellsz = cellsz
+
+        #Radius of cell
+        self.radius = int((self.cellsz-1)/2)
+
+        #Amount of orientations we want to account for, how many directions the pixel can slope in
+        self.orientations = orientations
+
+        #Resulting histogram of directions
+        self.directionarr = self.interate_pixels()
+
+    #Goes through every elevation data pixel, checks the neighboring pixels, checks the relative elevation difference, gets direction to that pixels, saves that as a vector.
     def interate_pixels(self):
         directionarr = np.full((len(self.inputarr[0]),len(self.inputarr),self.orientations,3),0.0)
         for x in range(0,len(self.inputarr)):
@@ -26,11 +27,9 @@ class hog2:
                 #print("PXVALUE ", pxvalue)
                 if (pxvalue >= 0):
                     neighbors = self.get_neighbors((x,y))
-                    #print("NEIGHBORS ", neighbors)
+
                     direction = self.calc_angle(neighbors,pxvalue)
-                    #print("ANGLE ", math.degrees(angle))
-                    #direction = self.angle_to_direction_vector(angle)
-                    #print("DIRECTION ", direction)
+
                     directionarr[x][y] = direction
         return directionarr
 
@@ -61,11 +60,8 @@ class hog2:
                         if (angle < 0):
                             angle = 360+angle
                         
-                        #value from 0-orientations
+                        #value from 0 to 'orientations'
                         orientation = round(angle/(360/self.orientations))
-                        #add relative height value
-                        #print(self.radius, x)
-
 
                         #original:
                         #orientationsarr[orientation] += neighbors[x+self.radius][y+self.radius]-value
@@ -78,6 +74,7 @@ class hog2:
 
         for i in range(0,self.orientations):
             if (countarr[i] > 0):
+                #get median relative elevation difference
                 orientationsarr[i]/=countarr[i]
             else:
                 orientationsarr[i] = 99999999
@@ -92,30 +89,12 @@ class hog2:
             xyzdirections.append( (direction[0], direction[1],orientationsarr[i]) )
 
         return xyzdirections
-        '''
 
-        #find minimum value direction
-        minimumvalue = orientationsarr[0]
-        minimumvalueindex = 0
-        for i in range(1,self.orientations):
-            if (orientationsarr[i] < minimumvalue):
-                minimumvalue = orientationsarr[i]
-                minimumvalueindex = i
-        
-        #if below relative to center value
-        if (minimumvalue < 0):
-            #radian angle 
-            angle_from_orientation = minimumvalueindex*math.radians(360/self.orientations)
-            if (angle_from_orientation < 0):
-                angle_from_orientation = 360 - angle_from_orientation
-            return angle_from_orientation
-        else:
-            return -1'''
 
     def angle_to_direction_vector(self,angle):
         if (angle == -1):
             return(0,0)
-        #print(angle, math.cos(angle), math.sin(angle))
+
         return (math.cos(angle),math.sin(angle))
 
                     

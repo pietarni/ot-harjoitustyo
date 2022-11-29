@@ -39,15 +39,17 @@ class HistogramGenerator:
 
         self.tiles = []
 
+        #Temporary hard coded path to an input data zip file. This "roadmap" is a map of roads and buildings and other areas where we dont want the sleds to go to.
         self.roadmaparchive = zipfile.ZipFile("/home/pietarni/ot/ot-harjoitustyo/harjoitustyo/input/Greater-helsinki-3.zip", 'r')
 
-    #Creates histogram of oriented gradients from heightmap
-    def create_hog(self):
+    #Creates histogram of directions from heightmap
+    def read_elevation_data(self):
 
         img = Image.new('RGB', (self.len_data_X + 1,self.len_data_Y + 1), "black") # Create a new black image
         pixels = img.load()
 
-        heightmaparr = np.full((self.len_data_X+1,self.len_data_Y+1),-1.0)
+        self.heightmaparr = np.full((self.len_data_X+1,self.len_data_Y+1),-1.0)
+        #load input elevation map data into the image
         try:
             with open(self.path) as infile:
                 for line in infile:
@@ -59,32 +61,29 @@ class HistogramGenerator:
                     pixels[xval,yval] = (zval,zval,zval)
 
                     unclamped_z = float(splitline[2])
-                    heightmaparr[xval][yval] = unclamped_z
-        except:
-            print("ERROR: bad path")
+                    self.heightmaparr[xval][yval] = unclamped_z
+        except Exception as e:
+            print("ERROR: ",e,self.path)
             return 0
         img.save("heightmap.png")
         self.heightmapimg = img
-        #cell size must be odd
-        self.hogmap = hog2(heightmaparr,3,8)
+        return 1
 
-        #Create Histogram of oriented gradients from image, we will use these to analyze slopes in the terrain.
-        #From documentation of scikit-image: https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_hog.html
+    def create_direction_map(self):
+        #cell size must be odd
+        #Create a histogram of oriented directions or whatever, basically a map based on elevation data, that shows where each pixel slopes towards.
+        self.hogmap = hog2(self.heightmaparr,3,8)
         #Returns 1 if success
         return 1
     
-    #Shows the created plot with the heightmap and HOG
-    #Will not be tested, since plt.show() pauses code execution until the window is closed.
-    def show_hog(self):
-        plt.show()
-    
     def get_tiles_within_boundary(self):
-        #Check witch roadmap tiles are within the boundaries of the current HOG
+        #Check which roadmap tiles are within the boundaries of the current HOG
         tileswithinboundary = []
         for tile in self.tiles:
             for coord in tile.koordinaatit:
                 if (coord[0] <=self.max_data_X and coord[0] >= self.min_data_X and coord[1] <=self.max_data_Y and coord[1]>=self.min_data_Y):
                     tileswithinboundary.append(tile)
+                    print("got tile " + tile.nimi)
         #Load the chosen roadmaps
         self.roadmaparr = np.full((self.len_data_X+1,self.len_data_Y+1),False)
         for tile in tileswithinboundary:
@@ -99,7 +98,7 @@ class HistogramGenerator:
         roadimage = roadimage.resize((1000,1000))
         
         #adding padding by calculating the bounding box of the tile after rotating it by the angle
-        #1.75 is the angle of the roadmap dataset relative to the coordinate system.
+        #1.75 is the angle of the roadmap dataset relative to the coordinate system of Helsinki.
         a = 1.75/57.296
         l = 1000
         New_Height = math.ceil(l * abs(math.sin(a)) + l * abs(math.cos(a)))
@@ -138,6 +137,7 @@ class HistogramGenerator:
         
         px = roadimage.load()
 
+        #Create roadmap array, for each pixel in range 0,1000 it is True, if that area has a road or building etc.
         for x in range(0,1000):
             for y in range(0,1000):
                 offsettedx = x+(xdiff*-1)
@@ -153,7 +153,7 @@ class HistogramGenerator:
 
 
     def read_json(self, jsonpath):
-        #self.create_polygons( [((100, 100), (200, 50), (125, 25),(1000,1000),(0,0))] )
+        #Reads json data, this is specifically for reading the roadmap data.
         with open(jsonpath, 'r') as f:
             data = json.load(f)
         for element in data["features"]:
