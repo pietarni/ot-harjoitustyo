@@ -22,20 +22,19 @@ class indeksiruutu:
         self.koordinaatit.append(coord)
 
 class HistogramGenerator:
-    def __init__(self, path,roadmappath):
+    def __init__(self, path,roadmappath, mindatacoords, datalength):
         #Temporary test and example source data
         self.path = path
         self.resmultiplier = 4
         
-        #Temporary hard-coded values, got from source data.
-        self.min_data_X = 25498000
-        self.min_data_Y = 6677000
+        self.min_data_X = mindatacoords[0]
+        self.min_data_Y = mindatacoords[1]
 
-        self.max_data_X = 25499000
-        self.max_data_Y = 6678000
+        self.max_data_X = self.min_data_X + datalength
+        self.max_data_Y = self.min_data_Y + datalength
 
-        self.len_data_X = self.max_data_X - self.min_data_X
-        self.len_data_Y = self.max_data_Y - self.min_data_Y
+        self.len_data_X = datalength
+        self.len_data_Y = datalength
 
         self.tiles = []
 
@@ -57,7 +56,9 @@ class HistogramGenerator:
                     #Get X,Y,Z values from data, put into image
                     xval = int(float(splitline[0]))-self.min_data_X
                     yval = self.len_data_Y-(int(float(splitline[1]))-self.min_data_Y)
-                    zval = int(float(splitline[2])*10)
+                    zval = int(float(splitline[2])*4)
+                    if (xval < 0 or yval < 0 or xval >= self.len_data_X or yval >= self.len_data_Y):
+                        continue
                     pixels[xval,yval] = (zval,zval,zval)
 
                     unclamped_z = float(splitline[2])
@@ -95,12 +96,12 @@ class HistogramGenerator:
         self.roadmaparchive.extract("Greater-helsinki-3/"+tile.nimi+".tif", 'temp_tif')
         roadimage = Image.open(os.getcwd()+"/temp_tif/Greater-helsinki-3/"+tile.nimi+".tif")
         #Resize to 1pixel/meter
-        roadimage = roadimage.resize((1000,1000))
+        roadimage = roadimage.resize((self.len_data_X,self.len_data_Y))
         
         #adding padding by calculating the bounding box of the tile after rotating it by the angle
         #1.75 is the angle of the roadmap dataset relative to the coordinate system of Helsinki.
         a = 1.75/57.296
-        l = 1000
+        l = self.len_data_X
         New_Height = math.ceil(l * abs(math.sin(a)) + l * abs(math.cos(a)))
         New_Width = math.ceil(l * abs(math.cos(a)) + l * abs(math.sin(a)))
         result = Image.new(mode="RGBA", size=(New_Width, New_Height),color=(0,0,0,0))
@@ -138,11 +139,11 @@ class HistogramGenerator:
         px = roadimage.load()
 
         #Create roadmap array, for each pixel in range 0,1000 it is True, if that area has a road or building etc.
-        for x in range(0,1000):
-            for y in range(0,1000):
+        for x in range(0,self.len_data_X):
+            for y in range(0,self.len_data_Y):
                 offsettedx = x+(xdiff*-1)
                 offsettedy = y-(ydiff*-1)
-                if (offsettedx < 0 or offsettedy < 0 or offsettedx >= 1000 or offsettedy >= 1000):
+                if (offsettedx < 0 or offsettedy < 0 or offsettedx >= self.len_data_X or offsettedy >= self.len_data_Y):
                     continue
 
                 if (px[offsettedx,offsettedy][3] > 0): #if un transparent

@@ -24,7 +24,6 @@ class hog2:
         for x in range(0,len(self.inputarr)):
             for y in range(0,len(self.inputarr[x])):
                 pxvalue = self.inputarr[x][y]
-                #print("PXVALUE ", pxvalue)
                 if (pxvalue >= 0):
                     neighbors = self.get_neighbors((x,y))
 
