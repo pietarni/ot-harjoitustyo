@@ -21,7 +21,6 @@ ot-harjoitustyo/harjoitustyo/ poetry install
 Ohjelman käynnistäminen:
 ot-harjoitustyo/harjoitustyo/ poetry run invoke start
 
-Ohjelmassa ei toistaiseksi ole käyttöliittymää, se käyttää kovakoodattua tietoa ja dataa, jota se saa mm. input-kansiosta.
 
 ## Toiminta
 Ohjelma pyytää käytättäjältä haluamansa alueen koordinaatit muodossa 'X,Y'.
