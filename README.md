@@ -32,3 +32,6 @@ Ohjelma lataa maastodataa, ja luo maastomallista "suuntakartan", eli 2D-listan j
 Sitten se lukee input-kansiosta rasteridataa teistä ja rakennuksista jne. Tämä data on saatu HSY:ltä. Se asettaa datat korkeusmallin mukaisesti.
 
 Sitten kartalle sijoitetaan käyttäjän valitsema määrä simuloituja pulkkailijoita kulkemaan mäkiä alas. Pulkkien reitit simuloidaan fyysikan kaavojen mukaisesti, ja piirretään Results/result.png kuvaan.
+
+Esimerkki tästä lopputuloksesta:
+![result](https://user-images.githubusercontent.com/117778910/206024386-c5b98d6c-47e2-40e7-bb05-d4d43b3c3f09.png)
