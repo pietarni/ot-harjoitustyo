@@ -30,6 +30,7 @@ Koordinaatit perustuvat lähtöhaineiston (kartta.hel.fi karkea maastomalli) ind
 
 Ohjelma lataa maastodataa, ja luo maastomallista "suuntakartan", eli 2D-listan jossa on analysoitu jokaisen pikselin kaltevuus. Tämä data on saatu kartta.hel.fi:stä
 Sitten se lukee input-kansiosta rasteridataa teistä ja rakennuksista jne. Tämä data on saatu HSY:ltä. Se asettaa datat korkeusmallin mukaisesti.
+### HUOM toistaiseksi tätä dataa on pakattuna ohjelman mukaan vain pohjois-arabianrannasta, eli tämä toimii toistaiseksi vain, jos käyttäjä syöttää koordinaatit 7,7. Pakkaan datan myöhemmin paremmin ladattavaksi erikseen, ettei ohjelman koko kasvaisi turhan suureksi
 
 Sitten kartalle sijoitetaan käyttäjän valitsema määrä simuloituja pulkkailijoita kulkemaan mäkiä alas. Pulkkien reitit simuloidaan fyysikan kaavojen mukaisesti, ja piirretään Results/result.png kuvaan.
 
