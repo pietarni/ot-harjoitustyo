@@ -15,13 +15,16 @@
 
 [Changelog](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/changelog.md)
 
+[Release1](https://github.com/pietarni/ot-harjoitustyo/releases/tag/viikko5)
+
 Vaadittavien kirjastojen asentaminen:
 ot-harjoitustyo/harjoitustyo/ poetry install
+ja 
+ot-harjoitustyo/harjoitustyo/ poetry add requests
 
 Ohjelman käynnistäminen:
 ot-harjoitustyo/harjoitustyo/ poetry run invoke start
 
-Ohjelmassa ei toistaiseksi ole käyttöliittymää, se käyttää kovakoodattua tietoa ja dataa, jota se saa mm. input-kansiosta.
 
 ## Toiminta
 Ohjelma pyytää käytättäjältä haluamansa alueen koordinaatit muodossa 'X,Y'.
