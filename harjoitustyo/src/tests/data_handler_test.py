@@ -1,8 +1,8 @@
 import unittest
-from histogram_generator import HistogramGenerator
+from data_handler import DataHandler
 
 
-class TestHistogramGenerator(unittest.TestCase):
+class TestDataHandler(unittest.TestCase):
     def setUp(self):
         # Temporary hardcoded example path
         path = "/home/pietarni/ot/ot-harjoitustyo/harjoitustyo/input/1x1m_677498.xyz"

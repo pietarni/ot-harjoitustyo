@@ -3,6 +3,7 @@ import math
 import zipfile
 import os
 import numpy as np
+import requests
 from PIL import Image
 from direction_map import DirectionMap
 
@@ -19,24 +20,47 @@ class IndexTile:
 
 
 class DataHandler:
-    def __init__(self, path, roadmappath, mindatacoords, datalength):
-        # Temporary test and example source data
-        self.path = path
-        self.resmultiplier = 4
+    def __init__(self, elevationdataurl, inputpath, coordinates, roadmappath,):
+        
+        self.setup_data(inputpath,coordinates,elevationdataurl)
 
-        self.min_data_x = mindatacoords[0]
-        self.min_data_y = mindatacoords[1]
-
-        self.max_data_x = self.min_data_x + datalength
-        self.max_data_y = self.min_data_y + datalength
-
-        self.len_data_x = datalength
-        self.len_data_y = datalength
+        self.max_data_x = self.min_data_x + self.len_data_x
+        self.max_data_y = self.min_data_y + self.len_data_y
 
         self.tiles = []
 
-        # Temporary hard coded path to an input data zip file. This "roadmap" is a map of roads and buildings and other areas where we dont want the sleds to go to.
+        # This "roadmap" is a map of roads and buildings and other areas where we dont want the sleds to go to.
         self.roadmaparchive = zipfile.ZipFile(roadmappath, 'r')
+
+    # Using coordinates, figure out what data to download, then download it.
+    # Also using these coordinates, setup some of the vital info for data_handler
+    def setup_data(self,inputpath,coordinates,elevationdataurl):
+        #From Helsinki's coordinate system.
+        origincode = 670491
+        origincoords = [25491000, 6670000]
+
+        # TODO: Make sure that if theres no data in this coord, that it doesnt crash
+        newcoord = [int(coordinates.split(",")[0]), int(coordinates.split(",")[1])]
+
+        indexcode = origincode
+        indexcode += newcoord[0]
+        indexcode += newcoord[1]*1000
+        mindatacoords = origincoords
+        mindatacoords[0] += newcoord[0]*1000
+        mindatacoords[1] += newcoord[1]*1000
+
+        elevationdataurl = elevationdataurl.replace("[CODE]", str(indexcode))
+        print("downloading elevation data from ", elevationdataurl)
+        r = requests.get(elevationdataurl)
+        with open(inputpath+'elevationdata.xyz', 'wb') as f:
+            f.write(r.content)
+
+        self.path = inputpath+'elevationdata.xyz'
+
+        self.len_data_x = 1000
+        self.len_data_y = 1000
+        self.min_data_x = mindatacoords[0]
+        self.min_data_y = mindatacoords[1]
 
     # Creates histogram of directions from heightmap
     def read_elevation_data(self):
@@ -67,8 +91,8 @@ class DataHandler:
         except Exception as e:
             print("ERROR: ", e, self.path)
             return 0
-        img.save("heightmap.png")
         self.heightmapimg = img
+        self.heightmapimg.save("results/result.png")
         return 1
 
     def create_direction_map(self):
@@ -85,20 +109,24 @@ class DataHandler:
             for coord in tile.koordinaatit:
                 if (coord[0] <= self.max_data_x and coord[0] >= self.min_data_x and coord[1] <= self.max_data_y and coord[1] >= self.min_data_y):
                     tileswithinboundary.append(tile)
-                    print("got tile " + tile.nimi)
-        # Load the chosen roadmaps
+
         self.roadmaparr = np.full(
             (self.len_data_x+1, self.len_data_y+1), False)
+        # Load the chosen roadmaps, load their data into roadmaparr
         for tile in tileswithinboundary:
             self.load_roadmap(tile)
 
     def load_roadmap(self, tile):
 
         # Get the file from the zip archive
-        self.roadmaparchive.extract(
-            "Greater-helsinki-3/"+tile.nimi+".tif", 'temp_tif')
-        roadimage = Image.open(
-            os.getcwd()+"/temp_tif/Greater-helsinki-3/"+tile.nimi+".tif")
+        try:
+            self.roadmaparchive.extract(
+                "Greater-helsinki-3/"+tile.nimi+".tif", 'temp_tif')
+        except:
+            print("Could not find roadmap file. This means that sledding routes might be placed in dangerous areas.")
+            return
+        temptifpath = os.getcwd()+"/temp_tif/Greater-helsinki-3/"+tile.nimi+".tif"
+        roadimage = Image.open(temptifpath)
         # Resize to 1pixel/meter
         roadimage = roadimage.resize((self.len_data_x, self.len_data_y))
 
@@ -161,6 +189,7 @@ class DataHandler:
 
         self.heightmapimg.paste(roadimage, (xdiff, -ydiff), roadimage)
         self.heightmapimg.save("results/result.png")
+        os.remove(temptifpath)
 
     def read_json(self, jsonpath):
         # Reads json data, this is specifically for reading the roadmap data.

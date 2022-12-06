@@ -19,35 +19,19 @@ print("Then simulated sledders descend down the slopes of the area, as if the gr
 print("Then their routes and data are evaluated. If the simulated sledding trip seemed safe and fun, then it is added on the map as a green path")
 
 print("\n")
-print("First, please enter the coordinates of the area you'd like to test. in format 'X,Y' without parentheses and where X and Y are replaced by your desired coordinates")
+print("Please enter the coordinates of the area you'd like to test. in format 'X,Y' without parentheses and where X and Y are replaced by your desired coordinates")
 print("The coordinates must be relative to the local origin. Each positive unit of X or Y means 1000 meters on land north and east of laajasalo")
 
-coordinput = input("Please enter your coordinates. For Example, enter '5,5' without parentheses")
-
+coordinput = input("Please enter your coordinates. For Example, enter '5,5' without parentheses ")
+print("Next, enter your desired density of simulated sledders.")
+print("For example, entering 50 will mean that 50*50 sledders will be placed in a grid on the map")
+print("Larger values result in a more detailed map, but will take longer to simulate.")
+print("Recommended values are between 20 and 200")
+simulation_density = int(input("Please enter the density of simulated sledders (for example '100' without parentheses) "))
 print("Generating direction map, this may take a minute...")
-origincode = 670491
-origincoords = [25491000, 6670000]
-# Make sure that if theres no data in this coord, that it doesnt crash
-newcoord = [int(coordinput.split(",")[0]), int(coordinput.split(",")[1])]
 
-indexcode = origincode
-indexcode += newcoord[0]
-indexcode += newcoord[1]*1000
-mindatacoords = origincoords
-mindatacoords[0] += newcoord[0]*1000
-mindatacoords[1] += newcoord[1]*1000
-
-elevationdataurl = elevationdataurl.replace("[CODE]", str(indexcode))
-print(elevationdataurl)
-r = requests.get(elevationdataurl)
-with open(inputpath+'elevationdata.xyz', 'wb') as f:
-    f.write(r.content)
-
-xyzpath = inputpath+'elevationdata.xyz'
-
-datalength = 1000
 data_handler = DataHandler(
-    xyzpath, zippath, mindatacoords, datalength)
+    elevationdataurl,inputpath ,coordinput, zippath)
 data_handler.read_elevation_data()
 data_handler.create_direction_map()
 
@@ -59,10 +43,10 @@ data_handler.get_tiles_within_boundary()
 print("Simulating sledders...")
 resultimg = Image.open(directory+"/results/result.png")
 # Put simulated sledders on the map, and simulate their descent.
-sz = 200
-segment = 1000.0/sz
-for x in range(0, sz-1):
-    for y in range(0, sz-1):
+
+segment = 1000.0/simulation_density
+for x in range(0, simulation_density-1):
+    for y in range(0, simulation_density-1):
         xcoord = int(x*segment+segment/2)
         ycoord = int(y*segment+segment/2)
         rider = SimulationUnit((xcoord, ycoord), data_handler.direction_map, data_handler.roadmaparr, resultimg, [
