@@ -33,5 +33,5 @@ Sitten se lukee input-kansiosta rasteridataa teistä ja rakennuksista jne. Täm�
 
 Sitten kartalle sijoitetaan käyttäjän valitsema määrä simuloituja pulkkailijoita kulkemaan mäkiä alas. Pulkkien reitit simuloidaan fyysikan kaavojen mukaisesti, ja piirretään Results/result.png kuvaan.
 
-Esimerkki tästä lopputuloksesta:
+Esimerkki tästä lopputuloksesta: (mustavalkoinen on korkeuskarttaa, punainen merkitsee näitä pulkkamäen vaara-alueita)
 ![result](https://user-images.githubusercontent.com/117778910/206024386-c5b98d6c-47e2-40e7-bb05-d4d43b3c3f09.png)
