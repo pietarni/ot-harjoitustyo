@@ -22,7 +22,7 @@ print("\n")
 print("Please enter the coordinates of the area you'd like to test. in format 'X,Y' without parentheses and where X and Y are replaced by your desired coordinates")
 print("The coordinates must be relative to the local origin. Each positive unit of X or Y means 1000 meters on land north and east of laajasalo")
 
-coordinput = input("Please enter your coordinates. For Example, enter '7,7' (pohjois-arabianranta) without parentheses ")
+coordinput = input("Please enter your coordinates. For Example, please enter '7,7' (pohjois-arabianranta) without parentheses ")
 print("Next, enter your desired density of simulated sledders.")
 print("For example, entering 50 will mean that 50*50 sledders will be placed in a grid on the map")
 print("Larger values result in a more detailed map, but will take longer to simulate.")
