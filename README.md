@@ -17,6 +17,8 @@
 
 Vaadittavien kirjastojen asentaminen:
 ot-harjoitustyo/harjoitustyo/ poetry install
+ja 
+ot-harjoitustyo/harjoitustyo/ poetry add requests
 
 Ohjelman käynnistäminen:
 ot-harjoitustyo/harjoitustyo/ poetry run invoke start
