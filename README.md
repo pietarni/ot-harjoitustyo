@@ -15,6 +15,8 @@
 
 [Changelog](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/changelog.md)
 
+[Release1](https://github.com/pietarni/ot-harjoitustyo/releases/tag/viikko5)
+
 Vaadittavien kirjastojen asentaminen:
 ot-harjoitustyo/harjoitustyo/ poetry install
 ja 
