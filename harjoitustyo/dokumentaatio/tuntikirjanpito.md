@@ -6,3 +6,6 @@
 | 29.11. | 4   | Pulkkien fysiikkasimuloinnin kehitystä, ja reittien piirtämistä kartalle |
 | 5.12. | 5   | Automaattinen lähtöaineistojen lataaminen ja fysiikkasimulointien korjausta |
 | 6.12. | 3   | Refaktorointia, käyttöliittymän kehitystä |
+
+
+Tuntien summa näiden mukaan 16, mutta olen unohtanut merkitä tänne monia koodisessioita, tunteja on varmaan yhteensä ainakin kymmenen lisää
