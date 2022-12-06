@@ -11,6 +11,6 @@
 - Pulkkaajien matka simuloidaan fysiikan kaavoja käyttäen, reitit piirretään kartalle jossa näkyy maaston korkeus, vaara-alueet ja pulkkailijoiden reitit.
 
 ## Viikko 5
--Ohjelma lataa itsenäisesti Helsingin maastomalliaineistoa käyttäjän toivomalta alueelta
--Koodin siivousta, Pylintin käyttöönotto
--Käyttöliittymän kehitystä - käyttäjä voi syöttää ohjelmaan haluamansa alueen koordinaatit, ja simulaatiotiheyden
+ - Ohjelma lataa itsenäisesti Helsingin maastomalliaineistoa käyttäjän toivomalta alueelta
+ - Koodin siivousta, Pylintin käyttöönotto
+ - Käyttöliittymän kehitystä - käyttäjä voi syöttää ohjelmaan haluamansa alueen koordinaatit, ja simulaatiotiheyden
