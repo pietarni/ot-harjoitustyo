@@ -4,17 +4,21 @@ import math
 
 
 class SimulationUnit:
-    def __init__(self, position, direction_map, roadmap, resultimg, col):
+    def __init__(self, position, direction_map, roadmap, resultimg, col, result_data_creator, origincoords):
         self.pos = position
         self.velocity = [0, 0, 0]
         # direction map
         self.direction_map = direction_map
+        # data handler
+        self.result_data_creator = result_data_creator
         # road map
         self.roadmap = roadmap
         # Draws paths of sledders to this image
         self.resultimg = resultimg
         # with this color
         self.color = col
+        # origin coordinates of area
+        self.origincoords = origincoords
         # length of direction map
         self.direction_map_lengthx = len(self.direction_map.directionarr)
         self.direction_map_lengthy = len(self.direction_map.directionarr)
@@ -147,7 +151,7 @@ class SimulationUnit:
             (startpos[0]-self.pos[0])**2+(startpos[1]-self.pos[1])**2)
 
         self.direction_change = (len(self.path) / max(self.travel_distance, 1))
-
+        path_accepted = False
         for px in self.path:
 
             if self.hit_wall:
@@ -164,7 +168,15 @@ class SimulationUnit:
                 break
             if self.direction_change > 1.2:
                 break
+            path_accepted = True
             self.resultimg.putpixel(px, (0, 255, 0, 255))
+
+        globalpath = []
+        for px in self.path:
+            globalpath.append([px[0]+self.origincoords[0],px[1]*-1+self.direction_map_lengthy+self.origincoords[1]])
+
+        if path_accepted and len(globalpath) >= 2:
+            self.result_data_creator.add_path(globalpath)
 
     def current_direction_map_tile(self):
         return (self.direction_map[int(self.pos[0]/self.direction_map_lengthx)][int(self.pos[1]/self.direction_map_lengthy)][0][0])

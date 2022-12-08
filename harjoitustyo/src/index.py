@@ -2,6 +2,7 @@ from PIL import Image
 
 from data_handler import DataHandler
 from simulation_unit import SimulationUnit
+from result_data_creator import ResultDataCreator
 import random
 import pathlib
 import requests
@@ -11,6 +12,8 @@ inputpath = directory+"/input/"
 zippath = inputpath + "Greater-helsinki-3.zip"
 elevationdataurl = "https://kartta.hel.fi/helshares/karkeamalli/1x1m/1x1m_[CODE].xyz"
 jsonpath = inputpath + "indeksi.json"
+result_data_creator = ResultDataCreator()
+
 
 
 print("This app simulates sledders on your chosen area of Helsinki")
@@ -32,6 +35,7 @@ print("Generating direction map, this may take a minute...")
 
 data_handler = DataHandler(
     elevationdataurl,inputpath ,coordinput, zippath)
+
 data_handler.read_elevation_data()
 data_handler.create_direction_map()
 
@@ -50,10 +54,11 @@ for x in range(0, simulation_density-1):
         xcoord = int(x*segment+segment/2)
         ycoord = int(y*segment+segment/2)
         rider = SimulationUnit((xcoord, ycoord), data_handler.direction_map, data_handler.roadmaparr, resultimg, [
-                               random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 100])
+                               random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 100], result_data_creator,[data_handler.min_data_x,data_handler.min_data_y])
         rider.ride()
 resultimg.save("results/result.png")
 print("Result image saved in results/result.png")
 
 # Show the sledders' paths on the map
 resultimg.show()
+result_data_creator.write_result_json(inputpath+"geojson_sample.json")

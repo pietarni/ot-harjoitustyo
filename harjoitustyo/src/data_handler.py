@@ -204,3 +204,18 @@ class DataHandler:
                     new_index_tile.lisaa_koordinaatti(
                         (int(coordinate[0]), int(coordinate[1])))
             self.tiles.append(new_index_tile)
+
+    def write_to_json(self, jsonpath):
+        # Reads json data, this is specifically for reading the roadmap data.
+        with open(jsonpath, 'r') as f:
+            data = json.load(f)
+        data["features"].clear()
+        # Serializing json
+        json_object = json.dumps(data, indent=4)
+        
+        # Writing to sample.json
+        with open("result.json", "w") as outfile:
+            outfile.write(json_object)
+        print("done")
+        #for element in data["features"]:
+        #    
