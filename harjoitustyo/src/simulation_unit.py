@@ -36,6 +36,7 @@ class SimulationUnit:
 
         # path
         self.path = []
+        self.vector_path = []
 
     def ride(self):
 
@@ -47,6 +48,9 @@ class SimulationUnit:
         measured_speed = 0
         # each tick is 1/4 second
         tick = 4.0
+
+        #This is for creating vector path for geojson
+        oldpos2 = startpos
 
         for i in range(0, 1000):
             # If within bounds
@@ -63,6 +67,11 @@ class SimulationUnit:
                     velocity_magnitude-old_velocity_magnitude)/float(int(tick/2)), self.max_speedChange)
                 old_velocity_magnitude = velocity_magnitude
             velocity_magnitude = np.linalg.norm(self.velocity)
+
+            dist_to_last_position = math.sqrt((oldpos2[0]-self.pos[0])**2+(oldpos2[1]-self.pos[1])**2)
+            if (dist_to_last_position >= 4):
+                self.vector_path.append(self.pos)
+                oldpos2 = self.pos
 
             if i % tick*2 == 0:
                 measured_speed = math.sqrt(
@@ -172,11 +181,11 @@ class SimulationUnit:
             self.resultimg.putpixel(px, (0, 255, 0, 255))
 
         globalpath = []
-        for px in self.path:
+        for px in self.vector_path:
             globalpath.append([px[0]+self.origincoords[0],px[1]*-1+self.direction_map_lengthy+self.origincoords[1]])
 
         if path_accepted and len(globalpath) >= 2:
-            self.result_data_creator.add_path(globalpath)
+            self.result_data_creator.add_path(globalpath,self.travel_time,self.travel_distance,self.max_speed,self.median_speed,self.max_speedChange)
 
     def current_direction_map_tile(self):
         return (self.direction_map[int(self.pos[0]/self.direction_map_lengthx)][int(self.pos[1]/self.direction_map_lengthy)][0][0])

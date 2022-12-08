@@ -4,7 +4,8 @@ class ResultDataCreator:
     def __init__(self):
 
         self.features = []
-    def add_path(self,path):
+    
+    def add_path(self,path,travel_time,travel_distance,max_speed,median_speed,max_speedChange):
         new_feature = {
         "type": "Feature",
         "geometry": {
@@ -12,7 +13,13 @@ class ResultDataCreator:
             "coordinates": []
         },
         "geometry_name":"wkb_geometry",
-        "properties":{}
+        "properties":{
+            "travel_time":travel_time,
+            "travel_distance":travel_distance,
+            "max_speed":max_speed,
+            "median_speed":median_speed,
+            "max_speed_change":max_speedChange
+        }
         }
         new_feature["geometry"]["coordinates"] = path
         self.features.append(new_feature)

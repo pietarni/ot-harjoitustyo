@@ -39,15 +39,13 @@ class DataHandler:
         origincode = 670491
         origincoords = [25491000, 6670000]
 
-        # TODO: Make sure that if theres no data in this coord, that it doesnt crash
-        newcoord = [int(coordinates.split(",")[0]), int(coordinates.split(",")[1])]
 
         indexcode = origincode
-        indexcode += newcoord[0]
-        indexcode += newcoord[1]*1000
+        indexcode += coordinates[0]
+        indexcode += coordinates[1]*1000
         mindatacoords = origincoords
-        mindatacoords[0] += newcoord[0]*1000
-        mindatacoords[1] += newcoord[1]*1000
+        mindatacoords[0] += coordinates[0]*1000
+        mindatacoords[1] += coordinates[1]*1000
 
         elevationdataurl = elevationdataurl.replace("[CODE]", str(indexcode))
         print("downloading elevation data from ", elevationdataurl)
