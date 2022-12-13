@@ -14,3 +14,8 @@
  - Ohjelma lataa itsenäisesti Helsingin maastomalliaineistoa käyttäjän toivomalta alueelta
  - Koodin siivousta, Pylintin käyttöönotto
  - Käyttöliittymän kehitystä - käyttäjä voi syöttää ohjelmaan haluamansa alueen koordinaatit, ja simulaatiotiheyden
+
+## Viikko 6
+ - Ohjelman voi laittaa iteroimaan monen karttaruudukon läpi, se voi näin itsenäisesti löytää vaikka koko Helsingin pulkkamäet.
+ - Ohjelma tallentaa tiedot pulkkamäistä GeoJSON-muotoiseen JSON tiedostoon. Näin dataa voi lukea ja filtteröidä esim. QGis:ssä
+ - Luokkakaaviot, sekvenssikaaviot, arkkitehtuurikuvaus
