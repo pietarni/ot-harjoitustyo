@@ -1,0 +1,13 @@
+{
+    "type": "FeatureCollection",
+    "features": [],
+    "totalFeatures": "unknown",
+    "numberReturned": 1,
+    "timeStamp": "2022-12-08T10:01:46.631Z",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:EPSG::3879"
+        }
+    }
+}
