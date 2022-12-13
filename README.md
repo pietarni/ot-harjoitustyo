@@ -17,6 +17,12 @@
 
 [Release1](https://github.com/pietarni/ot-harjoitustyo/releases/tag/viikko5)
 
+[Luokkakaavio](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/kuvat/luokkakaavio.png)
+
+[Sekvenssikaavio](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/kuvat/sekvenssikaavio.png)
+
+[Arkkitehtuurikuvaus](https://github.com/pietarni/ot-harjoitustyo/edit/master/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
+
 Vaadittavien kirjastojen asentaminen:
 ot-harjoitustyo/harjoitustyo/ poetry install
 ja 
@@ -39,3 +45,7 @@ Sitten kartalle sijoitetaan käyttäjän valitsema määrä simuloituja pulkkail
 
 Esimerkki tästä lopputuloksesta: (mustavalkoinen on korkeuskarttaa, punainen merkitsee näitä pulkkamäen vaara-alueita)
 ![result](https://user-images.githubusercontent.com/117778910/206024386-c5b98d6c-47e2-40e7-bb05-d4d43b3c3f09.png)
+
+Ohjelma tallentaa dataa myös result.json-tiedostoon GeoJSON-muotoisena. Tätä voi tarkastella esim. QGis-ohjelmassa. Tässä esimerkkinä:
+
+![image](https://user-images.githubusercontent.com/117778910/207429894-23856024-911c-49ac-816f-febef3efa539.png)
