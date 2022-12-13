@@ -49,9 +49,12 @@ class DataHandler:
 
         elevationdataurl = elevationdataurl.replace("[CODE]", str(indexcode))
         print("downloading elevation data from ", elevationdataurl)
-        r = requests.get(elevationdataurl)
-        with open(inputpath+'elevationdata.xyz', 'wb') as f:
-            f.write(r.content)
+        try:
+            r = requests.get(elevationdataurl)
+            with open(inputpath+'elevationdata.xyz', 'wb') as f:
+                f.write(r.content)
+        except:
+            raise ValueError("failed to download elevation data from url")
 
         self.path = inputpath+'elevationdata.xyz'
 
@@ -59,6 +62,7 @@ class DataHandler:
         self.len_data_y = 1000
         self.min_data_x = mindatacoords[0]
         self.min_data_y = mindatacoords[1]
+
 
     # Creates histogram of directions from heightmap
     def read_elevation_data(self):
