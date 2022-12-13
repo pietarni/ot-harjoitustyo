@@ -10,3 +10,5 @@
 | 13.12 | 4 | Yritin korjata testejä, arkkitehtuurikuvaus, luokkakaavio, sekvenssikaavio, pylintin käyttöönotto
 
 
+Tunnit yhteensä
+>22
