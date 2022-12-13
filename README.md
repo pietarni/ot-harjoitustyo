@@ -17,6 +17,12 @@
 
 [Release1](https://github.com/pietarni/ot-harjoitustyo/releases/tag/viikko5)
 
+[Luokkakaavio](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/kuvat/luokkakaavio.png)
+
+[Sekvenssikaavio](https://github.com/pietarni/ot-harjoitustyo/blob/master/harjoitustyo/dokumentaatio/kuvat/sekvenssikaavio.png)
+
+[Arkkitehtuurikuvaus](https://github.com/pietarni/ot-harjoitustyo/edit/master/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
+
 Vaadittavien kirjastojen asentaminen:
 ot-harjoitustyo/harjoitustyo/ poetry install
 ja 
